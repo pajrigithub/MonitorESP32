@@ -1,33 +1,71 @@
-📺 ESP32 Laptop Screen Mirror to 1.3" TFT LCD (ST7789)
-Proyek ini memungkinkan Anda untuk menampilkan layar laptop secara real-time ke layar TFT IPS 1.3 inch ST7789 menggunakan ESP32 melalui koneksi WiFi. Data gambar dikirim dari laptop menggunakan Python dan ditampilkan oleh ESP32 dengan bantuan library TFT_eSPI dan JPEGDecoder.
+# 📺 ESP32 Laptop Screen Mirror to 1.3" TFT LCD (ST7789)
 
-🔧 Perangkat Keras
- ESP32 Dev Board (contoh: ESP32-WROOM-32)
+Proyek ini memungkinkan Anda untuk menampilkan **layar laptop secara real-time** ke **layar TFT IPS 1.3 inch ST7789** menggunakan **ESP32** melalui koneksi WiFi. Gambar dari laptop diambil sebagai screenshot, dikonversi menjadi JPEG, lalu dikirim melalui jaringan TCP ke ESP32 untuk ditampilkan.
 
- Layar TFT IPS 1.3" dengan driver ST7789
+---
 
- Kabel jumper dan breadboard (opsional)
+## 🔧 Perangkat Keras
 
- Laptop/PC dengan Python terinstal
+- ✅ ESP32 Dev Board (misal: ESP32-WROOM-32)
+- ✅ Layar TFT IPS 1.3" ST7789 (240x240)
+- ✅ Kabel jumper
+- ✅ Laptop/PC dengan Python
+- ✅ Jaringan WiFi lokal atau hotspot dari laptop
 
- Jaringan WiFi lokal atau hotspot dari laptop
+---
 
-🧰 Perpustakaan (Library)
-Arduino / ESP32:
-WiFi.h: Untuk koneksi WiFi
+## 🧰 Library yang Digunakan
 
-WiFiServer.h: Untuk komunikasi TCP server
+### Arduino / ESP32
+- `WiFi.h`
+- `WiFiServer.h`
+- [`TFT_eSPI`](https://github.com/Bodmer/TFT_eSPI)
+- [`JPEGDecoder`](https://github.com/Bodmer/JPEGDecoder)
 
-TFT_eSPI: Untuk mengontrol layar TFT ST7789
+### Python
+- `socket` (builtin)
+- `numpy`
+- `opencv-python`
+- `pyautogui`
 
-JPEGDecoder: Untuk mendekode gambar JPEG di ESP32
+---
 
-Python:
-socket: Untuk membuat koneksi TCP ke ESP32
+## ⚙️ Setup Arduino IDE
 
-cv2 (OpenCV): Untuk memproses dan mengubah ukuran gambar
+1. **Instal Library**:
+   - Buka Arduino IDE > Library Manager
+   - Cari dan install:
+     - `TFT_eSPI`
+     - `JPEGDecoder`
 
-numpy: Untuk memanipulasi array gambar
+2. **Konfigurasi TFT_eSPI**:
+   - Buka file `User_Setup.h` di folder `TFT_eSPI`
+   - Ubah isinya sesuai pin dan driver ST7789, contoh:
 
-pyautogui: Untuk mengambil screenshot layar laptop
+     ```cpp
+     #define TFT_MISO -1  // Tidak digunakan (ST7789 hanya pakai MOSI)
+     #define TFT_MOSI 26  // SDA
+     #define TFT_SCLK 25  // SCL
+     #define TFT_CS   -1  // Tidak digunakan
+     #define TFT_DC    2  // Data Command
+     #define TFT_RST   4  // Reset
+     ```
 
+3. **Upload ke ESP32**:
+   - Pastikan WiFi SSID dan Password sesuai:
+
+     ```cpp
+     const char* ssid = "Nama_wifi";
+     const char* password = "password_wifi";
+     ```
+
+   - Upload sketch ke ESP32 dan buka Serial Monitor untuk melihat alamat IP.
+
+---
+
+## 🐍 Setup Python
+
+### 1. Instal Library:
+
+```bash
+pip install numpy opencv-python pyautogui
